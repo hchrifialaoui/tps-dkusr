@@ -31,24 +31,25 @@ Une des premières choses à noter avec le client `kubectl`, c’est sa capacit�
 ```sh
 dev $ kubectl version -o yaml
 clientVersion:
-  buildDate: 2018-09-27T17:05:32Z
+  buildDate: "2023-09-13T09:35:49Z"
   compiler: gc
-  gitCommit: 0ed33881dc4355495f623c6f22e7dd0b7632b7c0
+  gitCommit: 89a4ea3e1e4ddd7f7572286090359983e0387b2f
   gitTreeState: clean
-  gitVersion: v1.12.0
-  goVersion: go1.10.4
+  gitVersion: v1.28.2
+  goVersion: go1.20.8
   major: "1"
-  minor: "12"
-  platform: linux/amd64
+  minor: "28"
+  platform: windows/amd64
+kustomizeVersion: v5.0.4-0.20230601165947-6ce0bf390ce3
 serverVersion:
-  buildDate: 2018-09-27T16:55:41Z
+  buildDate: "2023-09-13T09:29:07Z"
   compiler: gc
-  gitCommit: 0ed33881dc4355495f623c6f22e7dd0b7632b7c0
+  gitCommit: 89a4ea3e1e4ddd7f7572286090359983e0387b2f
   gitTreeState: clean
-  gitVersion: v1.12.0
-  goVersion: go1.10.4
+  gitVersion: v1.28.2
+  goVersion: go1.20.8
   major: "1"
-  minor: "12"
+  minor: "28"
   platform: linux/amd64
 ```
 
@@ -59,10 +60,10 @@ Pour commencer, voyons la forme standard de sortie de la commande qui permet d�
 ```sh
 dev $ kubectl get nodes
 NAME                    STATUS   ROLES    AGE     VERSION
-k8s-training-dkusr-m1   Ready    master   3h59m   v1.12.1
-k8s-training-dkusr-n1   Ready    <none>   3h59m   v1.12.1
-k8s-training-dkusr-n2   Ready    <none>   3h59m   v1.12.1
-k8s-training-dkusr-n3   Ready    <none>   3h59m   v1.12.1
+NAME                                             STATUS   ROLES    AGE     VERSION
+scw-k8s-training-dkusr-default-0d7c23665c474fb   Ready    <none>   6m37s   v1.28.2
+scw-k8s-training-dkusr-default-36cd866d71df43d   Ready    <none>   6m51s   v1.28.2
+scw-k8s-training-dkusr-default-650f6177dad3485   Ready    <none>   6m41s   v1.28.2
 ```
 
 Cette sortie est simple et peut être adaptée pour fournir plus d’informations. Nous allons essayer à tour de rôles les commandes :
@@ -93,33 +94,30 @@ dev $ kubectl get nodes -o=template --template='{{ len .items }}{{"\n"}}'
 ```
 _A contrario_, si l’on demande une ressource en particulier, son type est directement récupérable :
 ```sh
-dev $ kubectl get no/k8s-training-dkusr-m1 -o go-template --template='{{ .kind }}{{"\n"}}'
+dev $ kubectl get no/scw-k8s-training-dkusr-default-0d7c23665c474fb -o go-template --template='{{ .kind }}{{"\n"}}'
 Node
 ```
 
 Il est très simple de récupérer quelques champs spécifiques de la ressource :
 ```sh
-dev $ kubectl get no/k8s-training-dkusr-m1 -o go-template --template='ce {{ .kind }} porte le nom de {{ .metadata.name }}{{"\n"}}'
-ce Node porte le nom de k8s-training-dkusr-m1
+dev $ kubectl get no/scw-k8s-training-dkusr-default-0d7c23665c474fb -o go-template --template='ce {{ .kind }} porte le nom de {{ .metadata.name }}{{"\n"}}'
+ce Node porte le nom de scw-k8s-training-dkusr-default-0d7c23665c474fb
 ```
 
 Pour avoir une vue sous forme de tableau personnalisée de tous les éléments, on peut utiliser la sortie **`custom-columns`**, qui reste relativement simple :
 ```sh
 dev $ kubectl get nodes -o=custom-columns=NAME:.metadata.name,RAM:.status.capacity.memory
 NAME                    RAM
-k8s-training-dkusr-m1   4045068Ki
-k8s-training-dkusr-n1   4045068Ki
-k8s-training-dkusr-n2   4045068Ki
-k8s-training-dkusr-n3   4045068Ki
+scw-k8s-training-dkusr-default-0d7c23665c474fb   4045068Ki
+scw-k8s-training-dkusr-default-36cd866d71df43d   4045068Ki
+scw-k8s-training-dkusr-default-650f6177dad3485   4045068Ki
 ```
 
 > **Exercice**
->
 > En utilisant le format de sortie **`-o=custom-columns`**, produire la liste des nœuds du cluster avec le format suivant :
 > ```
 > NAME                    ARCH      KERNEL
-> k8s-training-dkusr-m1   amd64     4.4.0-1061-aws
-> k8s-training-dkusr-n1   amd64     4.4.0-1061-aws
-> k8s-training-dkusr-n2   amd64     4.4.0-1061-aws
-> k8s-training-dkusr-n3   amd64     4.4.0-1061-aws
+> scw-k8s-training-dkusr-default-0d7c23665c474fb   amd64     6.2.0-36-generic
+> scw-k8s-training-dkusr-default-36cd866d71df43d   amd64     6.2.0-36-generic
+> scw-k8s-training-dkusr-default-650f6177dad3485   amd64     6.2.0-36-generic
 > ```

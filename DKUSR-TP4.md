@@ -87,29 +87,29 @@ On voit que les autres ***cm*** sont absents de la liste, qu’ils aient le labe
 Nous avons vu que les labels peuvent s’appliquer à n’importe quel type de ressources. Il faut savoir qu’il existe des ressources que l’on connaît déjà qui dispose par défaut de labels :
 
 ```sh
-dev $ kubectl get no/k8s-training-dkusr-n1 -o template --template='{{range $k,$v:=.metadata.labels}}{{$k}}={{$v}}{{"\n"}}{{end}}'
+dev $ kubectl get no/scw-k8s-training-dkusr-default-0d7c23665c474fb -o template --template='{{range $k,$v:=.metadata.labels}}{{$k}}={{$v}}{{"\n"}}{{end}}'
 beta.kubernetes.io/arch=amd64
 beta.kubernetes.io/os=linux
-kubernetes.io/hostname=k8s-training-dkusr-n1
+kubernetes.io/hostname=scw-k8s-training-dkusr-default-0d7c23665c474fb
 ```
 
 Équivalent avec une sortie au format JSON et un parse avec l’utilitaire `jq` :
 
 ```sh
-dev $ kubectl get no/k8s-training-dkusr-n1 -o json | jq .metadata.labels
+dev $ kubectl get no/scw-k8s-training-dkusr-default-0d7c23665c474fb -o json | jq .metadata.labels
 {
   "beta.kubernetes.io/arch": "amd64",
   "beta.kubernetes.io/os": "linux",
-  "kubernetes.io/hostname": "k8s-training-dkusr-n1",
+  "kubernetes.io/hostname": "scw-k8s-training-dkusr-default-0d7c23665c474fb",
 }
 ```
 
 Dernier moyen de voir les labels des objets : utiliser l’option `--show-labels` lors de l’utilisation de la commande `kubectl get`.
 
 ```sh
-dev $ kubectl get no k8s-training-dkusr-n1 --show-labels
+dev $ kubectl get no scw-k8s-training-dkusr-default-0d7c23665c474fb --show-labels
 NAME                    STATUS   ROLES    AGE     VERSION   LABELS
-k8s-training-dkusr-n1   Ready    <none>   4h17m   v1.12.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=k8s-training-dkusr-n1
+scw-k8s-training-dkusr-default-0d7c23665c474fb   Ready    <none>   4h17m   v1.12.1   beta.kubernetes.io/arch=amd64,beta.kubernetes.io/os=linux,kubernetes.io/hostname=scw-k8s-training-dkusr-default-0d7c23665c474fb
 ```
 
 Labelliser les nœuds est une opération classique que les administrateurs utilisent car elle permet de dédier des nœuds pour ne porter que certaines ressources et donc certains conteneurs spécifiques.
@@ -131,8 +131,8 @@ La commande magique `kubectl run` est là pour nous simplifier la vie :
 dev $ kubectl run -ti --rm --restart=Never --image=busybox busybox
 If you don't see a command prompt, try pressing enter.
 / # cat /etc/resolv.conf
-nameserver 10.0.0.10
-search hakim.svc.cluster.local svc.cluster.local cluster.local
+search default.svc.cluster.local svc.cluster.local cluster.local pvn-zealous-fermi
+nameserver 10.32.0.10
 options ndots:5
 / # exit
 ```
@@ -140,7 +140,7 @@ options ndots:5
 Même si cela paraît encore un peu mystérieux, noter la ligne :
 
 ```sh
-search hakim.svc.cluster.local [...]
+search default.svc.cluster.local [...]
 ```
 
 Vérifiez avec votre voisin de formation qu’il a bien une valeur différente de la vôtre.
@@ -293,7 +293,7 @@ Dans cet exemple, le `nodePort` sur lequel écoute notre ***service*** est le **
 dev $ $ kubectl get no -o wide
 NAME                    STATUS   ROLES    AGE     VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION   CONTAINER-RUNTIME
 k8s-training-dkusr-m1   Ready    master   4h23m   v1.12.1   172.31.20.49   <none>        Ubuntu 16.04.4 LTS   4.4.0-1061-aws   docker://17.3.2
-k8s-training-dkusr-n1   Ready    <none>   4h22m   v1.12.1   172.31.20.2    <none>        Ubuntu 16.04.4 LTS   4.4.0-1061-aws   docker://17.3.2
+scw-k8s-training-dkusr-default-0d7c23665c474fb   Ready    <none>   4h22m   v1.12.1   172.31.20.2    <none>        Ubuntu 16.04.4 LTS   4.4.0-1061-aws   docker://17.3.2
 k8s-training-dkusr-n2   Ready    <none>   4h22m   v1.12.1   172.31.22.93   <none>        Ubuntu 16.04.4 LTS   4.4.0-1061-aws   docker://17.3.2
 k8s-training-dkusr-n3   Ready    <none>   4h22m   v1.12.1   172.31.24.6    <none>        Ubuntu 16.04.4 LTS   4.4.0-1061-aws   docker://17.3.2
 ```
