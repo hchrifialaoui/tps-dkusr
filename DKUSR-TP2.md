@@ -204,6 +204,13 @@ Effectuons maintenant quelques changements dans notre conteneur.
 # apt-get -y install vim
 ```
 Nous venons d'installer vim sur notre conteneur Ubuntu. Cependant, nous savons que si nous tuons le conteneur et que nous le supprimons, nous n'aurons aucun moyen de repartir de ce point sans avoir à retaper ces commandes et télécharger de nouveau le paquet Vim. Pour éviter cela, nous allons faire un commit du conteneur et pousser son image dans un dépôt de notre registre privé ! Tapez exit puis ensuite la commande suivante :
+
+il faut setter les ENV
+```
+export REGISTRY_URL=core.campus.clusterdiali.me
+export TRG=[Nsurname] # example TRG=maittaleb
+```
+
 ```sh
 dev $ docker container commit vimubuntu $REGISTRY_URL/$TRG/vimubuntu
 ```
