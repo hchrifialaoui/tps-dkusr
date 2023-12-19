@@ -280,7 +280,7 @@ Pour l’instant l’application est très basique : elle répond sur la route r
 Pour s'exécuter, l'application nécessite des modules comme `Flask`. On utilisera aussi `gunicorn`, un serveur Python WSGI HTTP. Nous allons mettre toutes ces dépendances dans un fichier de prérequis standard en Python : `requirements.txt`. Dans ce fichier, mettez le contenu suivant :
 ```sh
 # kubernetes-app/requirements.txt
-Flask==1.0.2
+Flask==2.0.0
 gunicorn==19.9.0
 ```
 
