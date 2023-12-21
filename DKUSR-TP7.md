@@ -20,7 +20,7 @@ Nous allons générer deux types de traces :
 Pour commencer, nous allons déclarer la librairie qui nous sera utile pour formater nos logs en ajoutant une dépendance dans le fichier `requirements.txt` :
 ```sh
 # kubernetes-app/requirements.txt
-Flask==1.0.2
+Flask==2.0.0
 gunicorn==19.9.0
 prometheus-client==v0.3.1
 json-logging-py==0.2        # <== Ajout
