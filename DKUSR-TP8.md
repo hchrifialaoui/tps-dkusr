@@ -225,7 +225,7 @@ Nous allons à présent soumettre la création d’un cluster Redis en utilisant
 ```yaml
 # deployment/redis.yaml
 ---
-apiVersion: storage.spotahome.com/v1alpha2
+apiVersion: databases.spotahome.com/v1
 kind: RedisFailover
 metadata:
   name: redisfailover
